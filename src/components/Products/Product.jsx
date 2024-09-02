@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Product.module.css";
 import { ROUTES } from "../../utils/routes";
 const SIZES = [3, 4, 5, 6, 7];
 const Product = ({ images, price, title, description }) => {
-  const currentImage = images[0];
+  const [currentImage, setCurrentImage] = useState();
+  const [currentSize, setCurrentSize] = useState();
+  useEffect(() => {
+    if (!images.length) return;
+    setCurrentImage(images[0]);
+  }, [images]);
   return (
     <section className={styles.product}>
       <div className={styles.image}>
@@ -32,14 +37,21 @@ const Product = ({ images, price, title, description }) => {
           <span>Sizes:</span>
           <div className={styles.list}></div>
           {SIZES.map((size) => (
-            <div className={styles.size} onClick={() => {}}>
+            <div
+              className={`${styles.size} ${
+                currentSize === size ? styles.active : ""
+              }`}
+              onClick={() => setCurrentSize(size)}
+            >
               {size}
             </div>
           ))}
         </div>
         <p className={styles.description}>{description}</p>
         <div className={styles.action}>
-          <button className={styles.add}>Add to card</button>
+          <button className={styles.add} disabled={!currentSize}>
+            Add to card
+          </button>
           <button className={styles.favourite}>Add to favourites</button>
         </div>
         <div className={styles.bottom}>
