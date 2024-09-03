@@ -56,4 +56,5 @@ const userSlice = createSlice(
   //   },
   // }
 );
+export const { addItemToCard } = userSlice.actions;
 export default userSlice.reducer;

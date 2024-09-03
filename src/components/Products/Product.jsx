@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Product.module.css";
 import { ROUTES } from "../../utils/routes";
+import { useDispatch } from "react-redux";
+import { addItemToCard } from "../../features/slice/userSlice";
 const SIZES = [3, 4, 5, 6, 7];
-const Product = ({ images, price, title, description }) => {
+const Product = (item) => {
+  const { images, price, title, description } = item;
+  const dispatch = useDispatch();
   const [currentImage, setCurrentImage] = useState();
   const [currentSize, setCurrentSize] = useState();
   useEffect(() => {
     if (!images.length) return;
     setCurrentImage(images[0]);
   }, [images]);
+  const addToCard = () => {
+    dispatch(addItemToCard(item));
+  };
   return (
     <section className={styles.product}>
       <div className={styles.image}>
@@ -49,7 +56,11 @@ const Product = ({ images, price, title, description }) => {
         </div>
         <p className={styles.description}>{description}</p>
         <div className={styles.action}>
-          <button className={styles.add} disabled={!currentSize}>
+          <button
+            onClick={addToCard}
+            className={styles.add}
+            disabled={!currentSize}
+          >
             Add to card
           </button>
           <button className={styles.favourite}>Add to favourites</button>
